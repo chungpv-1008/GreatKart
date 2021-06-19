@@ -1,4 +1,5 @@
 from pathlib import Path
+from django.contrib.messages import constants as messages
 
 BASE_DIR = Path(__file__).resolve(strict=True).parent.parent
 
@@ -16,9 +17,9 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'category',
-    'accounts',
     'store',
-    'carts'
+    'carts',
+    'accounts',
 ]
 
 MIDDLEWARE = [
@@ -101,3 +102,18 @@ STATICFILES_DIRS = [
 # Cầu hình media file
 MEDIA_URL = '/media/'
 MEDIA_ROOT = BASE_DIR / 'media'
+
+MESSAGE_TAGS = {
+    messages.ERROR: 'danger',
+    messages.WARNING: 'warning',
+    messages.INFO: 'info',
+    messages.SUCCESS: 'success',
+    messages.DEBUG: 'secondary'
+}
+
+
+EMAIL_USE_TLS = True
+EMAIL_HOST = 'smtp.gmail.com'
+EMAIL_HOST_USER = 'phamvanchung11111999@gmail.com'
+EMAIL_HOST_PASSWORD = '11111999phamvanchung'
+EMAIL_PORT = 587
