@@ -146,21 +146,17 @@ def reset_password_validate(request, uidb64, token):
 
 
 def reset_password(request):
-    try:
-        if request.method == 'POST':
-            password = request.POST.get('password')
-            confirm_password = request.POST.get('confirm_password')
+    if request.method == 'POST':
+        password = request.POST.get('password')
+        confirm_password = request.POST.get('confirm_password')
 
-            if password == confirm_password:
-                uid = request.session.get('uid')
-                user = Account.objects.get(pk=uid)
-                user.set_password(password)
-                user.save()
-                messages.success(request, message="Password reset successful!")
-                return redirect('login')
-            else:
-                messages.error(request, message="Password do not match!")
-    except Exception:
-        messages.error(request, message="Password reset is failed!")
-    finally:
-        return render(request, 'accounts/reset_password.html')
+        if password == confirm_password:
+            uid = request.session.get('uid')
+            user = Account.objects.get(pk=uid)
+            user.set_password(password)
+            user.save()
+            messages.success(request, message="Password reset successful!")
+            return redirect('login')
+        else:
+            messages.error(request, message="Password do not match!")
+    return render(request, 'accounts/reset_password.html')

@@ -1,9 +1,18 @@
 from pathlib import Path
 from django.contrib.messages import constants as messages
 
+import environ
+
+
+env = environ.Env(
+    DEBUG=(bool, False)
+)
+environ.Env.read_env()
+
+
 BASE_DIR = Path(__file__).resolve(strict=True).parent.parent
 
-SECRET_KEY = 'nt(o48x3+qoygx!*=$==ul!&^4nyr8c%ybpga1p^as##_3s3__'
+SECRET_KEY = env("SECRET_KEY")
 
 DEBUG = True
 
@@ -59,12 +68,12 @@ AUTH_USER_MODEL = 'accounts.Account'    # Tên model thay thế cho model user m
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.mysql',
-        'NAME': 'greatkart',
-        'USER': 'root',
-        'PASSWORD': '12345678',
-        'HOST': 'localhost',
-        'PORT': 3306,
+        'ENGINE': env("DATABASE_ENGINE"),
+        'NAME': env("DATABASE_NAME"),
+        'USER': env("DATABASE_USER"),
+        'PASSWORD': env("DATABASE_PASSWORD"),
+        'HOST': env("DATABASE_HOST"),
+        'PORT': env("DATABASE_PORT"),
     }
 }
 
@@ -83,9 +92,9 @@ AUTH_PASSWORD_VALIDATORS = [
     },
 ]
 
-LANGUAGE_CODE = 'en-us'
+LANGUAGE_CODE = env("LANGUAGE_CODE")
 
-TIME_ZONE = 'UTC'
+TIME_ZONE = env("TIME_ZONE")
 
 USE_I18N = True
 
