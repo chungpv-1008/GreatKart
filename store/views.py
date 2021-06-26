@@ -42,7 +42,7 @@ def product_detail(request, category_slug, product_slug=None):
         )
     context = {
         'single_product': single_product,
-        'in_cart': in_cart
+        'in_cart': in_cart if 'in_cart' in locals() else False
     }
     return render(request, 'store/product_detail.html', context=context)
 
