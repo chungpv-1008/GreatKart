@@ -68,3 +68,6 @@ class Account(AbstractBaseUser):
 
     def has_module_perms(self, add_label):
         return True
+
+    def full_name(self):
+        return self.first_name + " " + self.last_name
