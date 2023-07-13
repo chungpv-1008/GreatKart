@@ -1,0 +1,28 @@
+[tool.poetry]
+name = "greatkart"
+version = "0.1.0"
+description = ""
+authors = ["tridn <tridnguyen97@gmail.com>"]
+readme = "README.md"
+
+[tool.poetry.dependencies]
+python = "^3.8"
+asgiref = "3.2.10"
+certifi = "2021.5.30"
+chardet = "4.0.0"
+django = "3.1"
+django-environ = "0.4.5"
+idna = "2.10"
+mysqlclient = "2.0.3"
+pillow = "8.2.0"
+pytz = "2021.1"
+requests = "2.25.1"
+six = "1.16.0"
+sqlparse = "0.4.1"
+urllib3 = "1.26.6"
+django-rest-framework = "^0.1.0"
+
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
