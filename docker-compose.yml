@@ -4,9 +4,9 @@ services:
     volumes:
       - ./data/db:/var/lib/postgresql/data
     environment:
-      - POSTGRES_DB=postgres
-      - POSTGRES_USER=postgres
-      - POSTGRES_PASSWORD=postgres
+      - POSTGRES_DB=${DB_USERNAME}
+      - POSTGRES_USER=${DB_PASSWORD}
+      - POSTGRES_PASSWORD=${DB_NAME}
   web:
     build: .
     command: python manage.py runserver 0.0.0.0:8000
