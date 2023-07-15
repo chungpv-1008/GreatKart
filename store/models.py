@@ -15,6 +15,8 @@ class Product(models.Model):
     category = models.ForeignKey(Category, on_delete=models.CASCADE)    # Khi xóa category thì Product bị xóa
     created_date = models.DateTimeField(auto_now_add=True)
     modified_date = models.DateTimeField(auto_now=True)
+    seller = models.ForeignKey(
+        Account, related_name="products", on_delete=models.CASCADE)
 
     def get_url(self):
         return reverse('product_detail', args=[self.category.slug, self.slug])

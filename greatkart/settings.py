@@ -30,6 +30,7 @@ INSTALLED_APPS = [
     'carts',
     'accounts',
     'orders',
+    'rest_framework'
 ]
 
 MIDDLEWARE = [
@@ -127,3 +128,8 @@ EMAIL_HOST = env("EMAIL_HOST")
 EMAIL_HOST_USER = env("EMAIL_HOST_USER")
 EMAIL_HOST_PASSWORD = env("EMAIL_HOST_PASSWORD")
 EMAIL_PORT = env("EMAIL_PORT")
+
+REST_FRAMEWORK = {
+    'DEFAULT_PAGINATION_CLASS': 'rest_framework.pagination.PageNumberPagination',
+    'PAGE_SIZE': 10
+}
