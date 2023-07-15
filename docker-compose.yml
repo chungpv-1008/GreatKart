@@ -1,25 +1,41 @@
+version: '3'
+
 services:
   db:
     image: postgres
-    volumes:
-      - ./data/db:/var/lib/postgresql/data
+    ports:
+      - '11432:5432'
+    networks:
+      - 9healthnetwork
     environment:
+<<<<<<< Updated upstream
       - POSTGRES_DB=${DB_USERNAME}
       - POSTGRES_USER=${DB_PASSWORD}
       - POSTGRES_PASSWORD=${DB_NAME}
   web:
+=======
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=postgres
+      - POSTGRES_DB=greatkart
+  9health_ecom:
+>>>>>>> Stashed changes
     build: .
     command: python manage.py runserver 0.0.0.0:8000
     volumes:
       - .:/app
     ports:
       - "8000:8000"
+    networks:
+      - 9healthnetwork
     environment:
-      - "POSTGRES_HOST_AUTH_METHOD=trust"
-      - POSTGRES_NAME=${DB_USERNAME}
-      - POSTGRES_USER=${DB_PASSWORD}
-      - POSTGRES_PASSWORD=${DB_NAME}
+      - POSTGRES_NAME=${DB_NAME}
+      - POSTGRES_USER=${DB_USERNAME}
+      - POSTGRES_PASSWORD=${DB_PASSWORD}
     depends_on:
       - db
-volumes:
-  postgres_data:
+    links:
+      - db:db
+
+networks:
+  9healthnetwork:
+    driver: bridge
