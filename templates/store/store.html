@@ -130,22 +130,24 @@
 
 				<div class="row">
 					{% for product in products %}
-					<div class="col-md-4">
-						<figure class="card card-product-grid">
-							<div class="img-wrap">
-								<img src="{{ product.images.url }}" />
-							</div>
-							<figcaption class="info-wrap">
-								<div class="fix-height">
-									<a href="{{ product.get_url }}" class="title">{{ product.product_name }}</a>
-									<div class="price-wrap mt-2">
-										<span class="price">${{ product.price }}</span>
-									</div>
+						{% if not product.is_disabled %}
+						<div class="col-md-4">
+							<figure class="card card-product-grid">
+								<div class="img-wrap">
+									<img src="{{ product.images.url }}" />
 								</div>
-								<a href="{{ product.get_url }}" class="btn btn-block btn-primary">View detail</a>
-							</figcaption>
-						</figure>
-					</div>
+								<figcaption class="info-wrap">
+									<div class="fix-height">
+										<a href="{{ product.get_url }}" class="title">{{ product.product_name }}</a>
+										<div class="price-wrap mt-2">
+											<span class="price">${{ product.price }}</span>
+										</div>
+									</div>
+									<a href="{{ product.get_url }}" class="btn btn-block btn-primary">View detail</a>
+								</figcaption>
+							</figure>
+						</div>
+						{% endif %}
 					{% endfor %}
 				</div>
 				{% if products %}

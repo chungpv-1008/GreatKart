@@ -30,7 +30,10 @@ INSTALLED_APPS = [
     'carts',
     'accounts',
     'orders',
-    'rest_framework'
+    'rest_framework',
+    # external packages
+    'easy_thumbnails',
+    'filer',
 ]
 
 MIDDLEWARE = [
@@ -133,3 +136,6 @@ REST_FRAMEWORK = {
     'DEFAULT_PAGINATION_CLASS': 'rest_framework.pagination.PageNumberPagination',
     'PAGE_SIZE': 10
 }
+
+LOGIN_REDIRECT_URL = '/accounts/login'
+LOGOUT_REDIRECT_URL = '/accounts/logout'

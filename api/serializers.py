@@ -2,6 +2,7 @@ from rest_framework import serializers
 
 from category.models import Category
 from store.models import Product, ReviewRating, Variation
+from orders.models import Order
 
 
 class VariationSerializer(serializers.ModelSerializer):
@@ -11,9 +12,6 @@ class VariationSerializer(serializers.ModelSerializer):
         
 
 class ProductSerializer(serializers.ModelSerializer):
-    seller = serializers.HiddenField(
-        default=serializers.CurrentUserDefault() 
-    )
     
     class Meta:
         model = Product
@@ -30,4 +28,11 @@ class CategorySerializer(serializers.ModelSerializer):
     
     class Meta:
         model = Category
+        fields = '__all__'
+
+
+class OrderSerializer(serializers.ModelSerializer):
+
+    class Meta:
+        model = Order
         fields = '__all__'

@@ -29,6 +29,7 @@ def payments(request):
             payment_method = data['payment_method']
             status = data['status']
 
+            print(order_id)
             # Lấy bản ghi order
             order = Order.objects.get(user=request.user, is_ordered=False, order_number=order_id)
             # Tạo 1 bản ghi payment
@@ -56,6 +57,7 @@ def payments(request):
                 order_product.quantity = item.quantity
                 order_product.product_price = item.product.price
                 order_product.ordered = True
+                order_product.vendor = item.vendor
                 order_product.save()
 
                 cart_item = CartItem.objects.get(id=item.id)
@@ -73,7 +75,7 @@ def payments(request):
             CartItem.objects.filter(user=request.user).delete()
 
             # Gửi thư cảm ơn
-            sendEmail(request=request, order=order)
+            # sendEmail(request=request, order=order)
 
             # Phản hồi lại ajax
             data = {
@@ -82,7 +84,8 @@ def payments(request):
             }
         return JsonResponse({"data": data}, status=200)
     except Exception as e:
-        return JsonResponse({"error": e}, status=400)
+        import json
+        return JsonResponse(json.dumps({"error": e}), status=400)
 
 
 def place_order(request, total=0, quantity=0,):
