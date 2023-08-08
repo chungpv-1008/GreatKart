@@ -27,6 +27,8 @@ redis = "^4.6.0"
 django = "3.2"
 django-filer = "^3.0.3"
 easy-thumbnails = "^2.8.5"
+django-crispy-forms = "^2.0"
+crispy-tailwind = "^0.5.0"
 
 
 [build-system]
