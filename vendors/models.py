@@ -9,6 +9,8 @@ from django.utils.safestring import mark_safe
 from django.utils.translation import gettext_lazy as _
 import six
 
+from orders.models import Order
+
 mark_safe_lazy = lazy(mark_safe, six.text_type)
 
 COMMISSION_RATE_VALIDATOR = [MinValueValidator(0), MaxValueValidator(100)]
@@ -97,23 +99,23 @@ class Vendor(Address):
     @property
     def total_revenue(self):
         total_revenue = 0
-        products = self.products.all()
-        for product in products:
-            order_item = OrderProduct.objects.get(product=product.id, vendor=self.id)
-            if order_item.ordered:
-                total_revenue += order_item.quantity * order_item.product_price 
+        orders = Order.objects.filter(vendor=self.id)
+        if len(orders):
+            total_revenue = sum([
+                order.order_total 
+                for order in orders
+                if order.is_ordered
+            ])
         return total_revenue
     
     @property
     def commission_price(self):
-        return self.commission_rate * self.total_revenue
+        return (self.commission_rate * self.total_revenue) / 100
     
     def commission_rate_in_percentage(self):
-        return f"{self.commission_rate * 100} %"
+        return f"{self.commission_rate} %"
 
     def save(self, *args, **kwargs):
         if not self.id:
             self.username = 'v' + str(date.today().year) +"-"+slugify(self.store_name)
-            # ví dụ: 20% commission rate input nhập vào -> 0.2 trong database
-            self.commission_rate = self.commission_rate / 100
         return super().save(*args, **kwargs)
