@@ -12,6 +12,25 @@ class Payment(models.Model):
 
     def __str__(self):
         return self.payment_id
+    
+
+class ShippingMethod(models.Model):
+    name = models.CharField(max_length=100)
+    description = models.TextField()
+    estimated_delivery_time = models.CharField(max_length=50)
+    cost = models.DecimalField(max_digits=10, decimal_places=2)
+    is_active = models.BooleanField(default=True)
+
+    def __str__(self):
+        return self.name
+     
+
+class Shipping(models.Model):
+    order = models.ForeignKey("Order", on_delete=models.CASCADE)
+    price = models.IntegerField()
+    shipping_method = models.ForeignKey(ShippingMethod, on_delete=models.CASCADE)
+    tracking_number = models.CharField(blank=True, max_length=20)
+    tracking_url = models.CharField(blank=True, max_length=100)
 
 
 class Order(models.Model):
@@ -23,6 +42,7 @@ class Order(models.Model):
     )
 
     user = models.ForeignKey(Account, on_delete=models.SET_NULL, null=True)
+    shipping = models.ForeignKey(Shipping, on_delete=models.SET_NULL, null=True)
     payment = models.ForeignKey(Payment, on_delete=models.SET_NULL, blank=True, null=True)
     order_number = models.CharField(max_length=20)
     first_name = models.CharField(max_length=50)

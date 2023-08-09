@@ -3,8 +3,13 @@ from rest_framework import viewsets, permissions
 from category.models import Category
 from .permissions import IsSellerOrAdmin
 from store.models import Product
-from orders.models import Order
-from .serializers import CategorySerializer, ProductSerializer, OrderSerializer
+from orders.models import Order, Shipping, Payment
+from .serializers import (
+    CategorySerializer, 
+    ProductSerializer, 
+    OrderSerializer,
+    ShippingSerializer,
+    PaymentSerializer)
 
 
 class CategoryViewSet(viewsets.ModelViewSet):
@@ -30,3 +35,14 @@ class ProductViewSet(viewsets.ModelViewSet):
 class OrderViewSet(viewsets.ModelViewSet):
     queryset = Order.objects.all()
     serializer_class = OrderSerializer
+
+
+
+class ShippingViewSet(viewsets.ModelViewSet):
+    queryset = Shipping.objects.all()
+    serializer_class = ShippingSerializer
+
+
+class PaymentViewSet(viewsets.ModelViewSet):
+    queryset = Payment.objects.all()
+    serializer_class = PaymentSerializer
