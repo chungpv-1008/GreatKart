@@ -26,7 +26,7 @@ class ShippingMethod(models.Model):
      
 
 class Shipping(models.Model):
-    order = models.ForeignKey("Order", on_delete=models.CASCADE)
+    order = models.ForeignKey("Order", on_delete=models.CASCADE, related_name="order_id")
     price = models.IntegerField()
     shipping_method = models.ForeignKey(ShippingMethod, on_delete=models.CASCADE)
     tracking_number = models.CharField(blank=True, max_length=20)
@@ -42,7 +42,7 @@ class Order(models.Model):
     )
 
     user = models.ForeignKey(Account, on_delete=models.SET_NULL, null=True)
-    shipping = models.ForeignKey(Shipping, on_delete=models.SET_NULL, null=True)
+    shipping = models.ForeignKey(Shipping, on_delete=models.SET_NULL, null=True, related_name="shipping_id")
     payment = models.ForeignKey(Payment, on_delete=models.SET_NULL, blank=True, null=True)
     order_number = models.CharField(max_length=20)
     first_name = models.CharField(max_length=50)
