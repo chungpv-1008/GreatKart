@@ -30,8 +30,8 @@ class Product(models.Model):
     category = models.ForeignKey(Category, on_delete=models.CASCADE)    # Khi xóa category thì Product bị xóa
     created_date = models.DateTimeField(auto_now_add=True)
     modified_date = models.DateTimeField(auto_now=True)
-    vendor = models.ForeignKey(
-        "vendors.Vendor", related_name="products", on_delete=models.CASCADE)
+    vendors = models.ManyToManyField(
+        "vendors.Vendor", related_name='products')
     # is_disabled = models.BooleanField(default=False)
     # disabled_start_time = models.DateTimeField()
     # disabled_duration = models.DurationField()
