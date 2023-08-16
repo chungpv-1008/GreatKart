@@ -24,13 +24,39 @@
                         {% endif %}
                     </div>
 				</div>
-				<div class="card">
-                    <h5 class="card-header">Payment Method</h5>
-                    <div class="card-body">
-                        <p class="card-text">
-                            
-                        </p>
-                    </div>
+				<div class="card bg-white p-4 rounded-lg shadow-md">
+					<h5 class="card-header">Payment Method</h5>
+					<div class="card-body">
+						<p class="card-text">
+							<div class="mb-4">
+								<button id="paymentButton" class="group w-full bg-indigo-500 py-2 px-4 rounded-lg transition duration-300 ease-in-out hover:bg-indigo-600 focus:outline-none focus:ring focus:ring-indigo-200 focus:ring-opacity-50" onclick="toggleDropdown()">
+									Select Payment Method
+								</button>
+								<ul id="paymentMethodsDropdown" class="origin-top-left absolute invisible w-full mt-2 py-1 px-4 rounded-lg border border-gray-300 bg-white z-10 transition duration-300 ease-in-out">
+									<li class="cursor-pointer hover:bg-gray-100 py-1" onclick="selectPaymentMethod('credit_card')">Credit Card</li>
+									<li class="cursor-pointer hover:bg-gray-100 py-1" onclick="selectPaymentMethod('paypal')">PayPal</li>
+									<!-- Add more payment methods here -->
+								</ul>
+							</div>
+							<div class="flex flex-col items-center mt-4">
+								<div class="w-64">
+									<div class="bg-green-500 py-2 px-4 rounded-lg transition duration-300 ease-in-out hover:bg-green-600">
+										{% if selectedMethod == 'credit_card' %}
+											<div id="paypal-button-container">
+												<p class="text-center mb-3">
+													<img src="{% static 'images/misc/payments.png' %}" height="26" />
+												</p>
+											</div>
+										{% else %}
+											{{selectedMethod}}
+											Select a payment method to pay
+										{% endif %}
+									</div>
+								</div>
+							</div>
+						</p>
+						
+					</div>
 				</div>
 				<div class="card">
                     <h5 class="card-header">Review Products</h5>
@@ -98,12 +124,6 @@
 							</dd>
 						</dl>
 						<hr />
-						<p class="text-center mb-3">
-							<img src="{% static 'images/misc/payments.png' %}" height="26" />
-						</p>
-						<div id="paypal-button-container">
-
-						</div>
 						<a href="{% url 'store' %}" class="btn btn-light btn-block">Continue Shopping</a>
 					</div>
 					<!-- card-body.// -->
@@ -187,5 +207,38 @@
 			});
 		}
 	}).render('#paypal-button-container');
+
+	let selectedMethod = null;
+	let isDropdownVisible = true;
+
+    function toggleDropdown() {
+        const dropdown = document.getElementById('paymentMethodsDropdown');
+        isDropdownVisible = !isDropdownVisible;
+        dropdown.classList.toggle('invisible', !isDropdownVisible);
+    }
+
+	function selectPaymentMethod(method) {
+		selectedMethod = method;
+		updatePaymentButton();
+		const paymentButton = document.getElementById('paymentButton');
+        paymentButton.classList.remove('hidden');
+        paymentButton.innerText = `Pay with ${method}`;
+
+        toggleDropdown();
+	}
+
+	function updatePaymentButton() {
+		const paymentButton = document.getElementById('paymentButton');
+		const dropdown = document.getElementById('paymentMethodsDropdown');
+
+		if (selectedMethod) {
+			paymentButton.classList.remove('hidden');
+			paymentButton.innerText = `Pay with ${selectedMethod}`;
+			dropdown.classList.add('hidden');
+		} else {
+			dropdown.classList.remove('hidden');
+			paymentButton.classList.add('hidden');
+		}
+	}
 </script>
 {% endblock %}
