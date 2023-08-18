@@ -30,7 +30,13 @@ INSTALLED_APPS = [
     'carts',
     'accounts',
     'orders',
-    'rest_framework'
+    'vendors',
+    'rest_framework',
+    # external packages
+    'easy_thumbnails',
+    'filer',
+    'crispy_forms',
+    'crispy_tailwind',
 ]
 
 MIDDLEWARE = [
@@ -104,6 +110,9 @@ USE_L10N = True
 
 USE_TZ = True
 
+CRISPY_TEMPLATE_PACK = "bootstrap4"
+CRISPY_ALLOWED_TEMPLATE_PACKS = "tailwind"
+CRISPY_TEMPLATE_PACK = "tailwind"
 STATIC_URL = '/static/'
 STATIC_ROOT = BASE_DIR / 'static'
 STATICFILES_DIRS = [

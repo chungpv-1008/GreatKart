@@ -1,0 +1,18 @@
+{% extends 'vendor/_base.html' %} 
+{% load crispy_forms_tags %} 
+{% block content %}
+<div class="columns is-multiline is-mobile is-centered">
+  <div class="column is-half">
+    <div class="field has-addons">
+      <form method="post" enctype="multipart/form-data">
+        {{ form|crispy }} {% csrf_token %}
+        <hr />
+        <div class="control">
+          <button type="submit" class="button is-link">Save Changes</button>
+          <button class="button is-light is-rounded">Cancel</button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+{% endblock %}
