@@ -63,6 +63,7 @@ class Order(models.Model):
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
     vendor = models.ForeignKey('vendors.Vendor', on_delete=models.CASCADE, null=True)
+    shipping_address = models.CharField(max_length=100)
 
     def full_name(self):
         return "{0} {1}".format(self.first_name, self.last_name)

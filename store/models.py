@@ -35,6 +35,7 @@ class Product(models.Model):
     # is_disabled = models.BooleanField(default=False)
     # disabled_start_time = models.DateTimeField()
     # disabled_duration = models.DurationField()
+    ingredients = models.CharField(max_length=200, blank=True)
     visibility = models.IntegerField(
         default=ShopProductVisibility.ALWAYS_VISIBLE,
         choices=ShopProductVisibility.choices,

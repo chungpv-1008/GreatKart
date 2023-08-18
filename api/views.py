@@ -7,7 +7,8 @@ from orders.models import Order, Shipping, Payment
 from .serializers import (
     CategorySerializer, 
     ProductSerializer, 
-    OrderSerializer,
+    OrderWriteSerializer,
+    OrderReadSerializer,
     ShippingSerializer,
     PaymentSerializer)
 
@@ -26,7 +27,7 @@ class ProductViewSet(viewsets.ModelViewSet):
         if self.action in ('create', ):
             self.permission_classes = (permissions.AllowAny, )#permissions.IsAuthenticated, )
         elif self.action in ('update', 'partial_update', 'destroy', ):
-            self.permission_classes = (IsSellerOrAdmin, )
+            self.permission_classes = (permissions.AllowAny, )
         else:
             self.permission_classes = (permissions.AllowAny, )
         return super().get_permissions()
@@ -34,7 +35,12 @@ class ProductViewSet(viewsets.ModelViewSet):
 
 class OrderViewSet(viewsets.ModelViewSet):
     queryset = Order.objects.all()
-    serializer_class = OrderSerializer
+    
+    def get_serializer_class(self):
+        if self.action in ('create', 'update', 'partial_update', 'destroy'):
+            return OrderWriteSerializer
+
+        return OrderReadSerializer
 
 
 
