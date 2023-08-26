@@ -1,4 +1,4 @@
-def momo(amount):
+def momo(amount,orderId):
     import json
     import urllib.request
     import urllib
@@ -15,7 +15,6 @@ def momo(amount):
     orderInfo = "pay with MoMo"
     redirectUrl = "http://localhost:8081/api/momo/webhook/"
     ipnUrl = "http://localhost:8081/api/momo/webhook/"
-    orderId = str(uuid.uuid4())
     requestId = str(uuid.uuid4())
     requestType = "captureWallet"
     extraData = ""  # pass empty value or Encode base64 JsonString

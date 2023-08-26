@@ -8,6 +8,7 @@ from store.models import Product
 from django.core.mail import EmailMessage
 from django.template.loader import render_to_string
 from utils.payment import momo
+from utils.order import create_order_number
 
 
 def sendEmail(request, order):
@@ -126,13 +127,7 @@ def place_order(request, total=0, quantity=0,):
             data.tax = tax
             data.ip = request.META.get('REMOTE_ADDR')
             data.save()
-            # Generate order number
-            yr = int(datetime.date.today().strftime('%Y'))
-            dt = int(datetime.date.today().strftime('%d'))
-            mt = int(datetime.date.today().strftime('%m'))
-            d = datetime.date(yr, mt, dt)
-            current_date = d.strftime("%Y%m%d")     # 20210305
-            order_number = current_date + str(data.id)
+            order_number = create_order_number()
             data.order_number = order_number
             data.save()
 
@@ -212,13 +207,7 @@ def momo_payment(request, total=0, quantity=0,):
             data.tax = tax
             data.ip = request.META.get('REMOTE_ADDR')
             data.save()
-            # Generate order number
-            yr = int(datetime.date.today().strftime('%Y'))
-            dt = int(datetime.date.today().strftime('%d'))
-            mt = int(datetime.date.today().strftime('%m'))
-            d = datetime.date(yr, mt, dt)
-            current_date = d.strftime("%Y%m%d")     # 20210305
-            order_number = current_date + str(data.id)
+            order_number = create_order_number()
             data.order_number = order_number
             data.save()
 

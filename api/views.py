@@ -104,5 +104,17 @@ class MomoWebhookAPIView(APIView):
     """
 
     def post(self, request, format=None):
-        payload = request.body
+        status_code = request.POST.get('statusCode')
+        order_number = request.POST.get('orderId')
+        if status_code == 0:
+            order = get_object_or_404(Order, order_number=order_number)
+            order.status = 'Completed'
+            order.save()
+
+            payment = get_object_or_404(Payment, order_payment=order.id)
+            payment.status = 'COMPLETED'
+            payment.save()
+
+
+
         return Response(status=status.HTTP_200_OK, data=payload)
