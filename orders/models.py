@@ -1,20 +1,32 @@
 from django.db import models
-
+from django.utils.translation import gettext_lazy as _
 from accounts.models import Account
 
+
 class Payment(models.Model):
+    PAYPAL = 'P'
+    MOMO = 'M'
+    COD = 'C'
+
+    PAYMENT_CHOICES = ((PAYPAL, _('paypal')), (MOMO, _('momo')), (COD, _('cod')))
+
+    STATUS_CHOICES = (("PENDING", _('pending')), ("COMPLETED",
+                    _('completed')), ("FAILED", _('failed')))
+    
     user = models.ForeignKey(Account, on_delete=models.CASCADE)
     payment_id = models.CharField(max_length=100)
-    payment_method = models.CharField(max_length=100)
+    payment_method = models.CharField(max_length=1, choices=PAYMENT_CHOICES)
     amount_paid = models.CharField(max_length=100)
-    status = models.CharField(max_length=100)
+    status = models.CharField(max_length=100, choices=STATUS_CHOICES)
     created_at = models.DateTimeField(auto_now_add=True)
+    order_payment = models.OneToOneField(
+        "orders.Order", related_name='payment_order', on_delete=models.CASCADE)
 
     def __str__(self):
         return self.payment_id
     
 
-class ShippingMethod(models.Model):
+class ShippingVendor(models.Model):
     name = models.CharField(max_length=100)
     description = models.TextField()
     estimated_delivery_time = models.CharField(max_length=50)
@@ -28,7 +40,7 @@ class ShippingMethod(models.Model):
 class Shipping(models.Model):
     order = models.ForeignKey("Order", on_delete=models.CASCADE, related_name="order_id")
     price = models.IntegerField()
-    shipping_method = models.ForeignKey(ShippingMethod, on_delete=models.CASCADE)
+    shipping_method = models.ForeignKey(ShippingVendor, on_delete=models.CASCADE)
     tracking_number = models.CharField(blank=True, max_length=20)
     tracking_url = models.CharField(blank=True, max_length=100)
 

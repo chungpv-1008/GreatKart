@@ -121,4 +121,41 @@ class PaymentSerializer(serializers.ModelSerializer):
     class Meta:
         model = Payment
         fields = '__all__'
-        read_only_fields = ('payment_id', )
+        read_only_fields = ('payment_id', 'status')
+
+
+class CheckoutSerializer(serializers.ModelSerializer):
+    """
+    Serializer class to set or update shipping address, billing address and payment of an order.
+    """
+    payment = PaymentSerializer()
+
+    class Meta:
+        model = Order
+        fields = ('id', 'payment', 'shipping_address')
+
+    def update(self, instance, validated_data):
+        order_shipping_address = None
+        order_payment = None
+
+        shipping_address = validated_data['shipping_address']
+        payment = validated_data['payment']
+
+        # Payment option is not set for an order
+        if not instance.payment:
+            order_payment = Payment(**payment, order=instance)
+            order_payment.save()
+
+        else:
+            # Payment option is set so update its value
+            p = Payment.objects.filter(order=instance)
+            p.update(**payment)
+
+            order_payment = p.first()
+
+        # Update order
+        instance.shipping_address = shipping_address
+        instance.order_payment = order_payment
+        instance.save()
+
+        return instance
