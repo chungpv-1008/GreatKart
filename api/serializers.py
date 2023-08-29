@@ -37,12 +37,12 @@ class OrderProductSerializer(serializers.ModelSerializer):
     class Meta:
         model = OrderProduct
         fields = ('id', 'order', 'product', 'quantity',
-                  'product_price', 'cost', 'created_at', 'updated_at', )
-        read_only_fields = ('order', )
+                    'cost', 'created_at', 'updated_at', )
+        read_only_fields = ('order', 'product_price' )
 
     def validate(self, validated_data):
         order_quantity = validated_data['quantity']
-        product_quantity = validated_data['product'].quantity
+        product_quantity = validated_data['product'].stock
 
         order_id = self.context['view'].kwargs.get('order_id')
         product = validated_data['product']
@@ -57,9 +57,9 @@ class OrderProductSerializer(serializers.ModelSerializer):
             error = {'product': _('Product already exists in your order.')}
             raise serializers.ValidationError(error)
 
-        if self.context['request'].user == product.seller:
-            error = _('Adding your own product to your order is not allowed')
-            raise PermissionDenied(error)
+        # if self.context['request'].user == product.vendor:
+        #     error = _('Adding your own product to your order is not allowed')
+        #     raise PermissionDenied(error)
 
         return validated_data
 
@@ -73,7 +73,7 @@ class OrderReadSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Order
-        fields = ('id', 'user', 'shipping_address', 'shipping', 'payment', 'address_line_1', 'address_line_2', 'country',
+        fields = ('id', 'buyer', 'shipping_address', 'shipping', 'payment', 'address_line_1', 'address_line_2', 'country',
                   'order_items', 'order_total', 'status', 'created_at', 'updated_at', 'vendor_info')
 
 
@@ -90,9 +90,16 @@ class OrderWriteSerializer(serializers.ModelSerializer):
 
     def create(self, validated_data):
         orders_data = validated_data.pop('order_items')
+        order_total = sum([
+            order["product"].price * order["quantity"]
+            for order in orders_data])
+        validated_data['order_total'] = order_total
         order = Order.objects.create(**validated_data)
 
         for order_data in orders_data:
+            product = order_data["product"]
+            order_data["user"] = validated_data["buyer"]
+            order_data["product_price"] = product.price
             OrderProduct.objects.create(order=order, **order_data)
 
         return order

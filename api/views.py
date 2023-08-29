@@ -65,7 +65,7 @@ class PaymentViewSet(viewsets.ModelViewSet):
     def get_queryset(self):
         res = super().get_queryset()
         user = self.request.user
-        return res.filter(order__user=user.id)
+        return res.filter(order__buyer=user.id)
 
     def get_permissions(self):
         if self.action in ('update', 'partial_update', 'destroy'):
@@ -115,6 +115,4 @@ class MomoWebhookAPIView(APIView):
             payment.status = 'COMPLETED'
             payment.save()
 
-
-
-        return Response(status=status.HTTP_200_OK, data=payload)
+        return Response(status=status.HTTP_200_OK)
