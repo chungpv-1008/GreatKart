@@ -1,4 +1,5 @@
 from django.db import models
+from django.utils.functional import cached_property
 from django.utils.translation import gettext_lazy as _
 from accounts.models import Account
 
@@ -99,6 +100,12 @@ class OrderProduct(models.Model):
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
 
-
     def __str__(self):
         return self.product.product_name
+
+    @cached_property
+    def cost(self):
+        """
+        Total cost of the ordered item
+        """
+        return round(self.quantity * self.product.price, 2)

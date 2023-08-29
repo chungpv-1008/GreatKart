@@ -127,7 +127,7 @@ def place_order(request, total=0, quantity=0,):
             data.tax = tax
             data.ip = request.META.get('REMOTE_ADDR')
             data.save()
-            order_number = create_order_number()
+            order_number = create_order_number(data)
             data.order_number = order_number
             data.save()
 
@@ -186,6 +186,7 @@ def momo_payment(request, total=0, quantity=0,):
         quantity += cart_item.quantity
     tax = (2 * total) / 100
     grand_total = total + tax
+    order_number = 0
 
     if request.method == 'POST':
         form = OrderForm(request.POST)
@@ -207,7 +208,7 @@ def momo_payment(request, total=0, quantity=0,):
             data.tax = tax
             data.ip = request.META.get('REMOTE_ADDR')
             data.save()
-            order_number = create_order_number()
+            order_number = create_order_number(data)
             data.order_number = order_number
             data.save()
 
@@ -219,5 +220,5 @@ def momo_payment(request, total=0, quantity=0,):
                 'tax': tax,
                 'grand_total': grand_total,
             }
-    response = momo(int(grand_total))
+    response = momo(int(grand_total), order_number)
     return HttpResponseRedirect(response.json()['payUrl'])

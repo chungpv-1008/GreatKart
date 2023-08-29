@@ -65,7 +65,7 @@ class PaymentViewSet(viewsets.ModelViewSet):
     def get_queryset(self):
         res = super().get_queryset()
         user = self.request.user
-        return res.filter(order__buyer=user)
+        return res.filter(order__user=user.id)
 
     def get_permissions(self):
         if self.action in ('update', 'partial_update', 'destroy'):

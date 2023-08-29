@@ -1,5 +1,6 @@
+import datetime
 
-def create_order_number(id) -> str:
+def create_order_number(data) -> str:
     yr = int(datetime.date.today().strftime('%Y'))
     dt = int(datetime.date.today().strftime('%d'))
     mt = int(datetime.date.today().strftime('%m'))
