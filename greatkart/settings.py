@@ -37,6 +37,7 @@ INSTALLED_APPS = [
     'filer',
     'crispy_forms',
     'crispy_tailwind',
+    'drf_yasg',
 ]
 
 MIDDLEWARE = [
