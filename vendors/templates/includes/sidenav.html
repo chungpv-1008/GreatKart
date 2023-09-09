@@ -12,25 +12,13 @@
         <!-- Nav items -->
         <ul class="navbar-nav">
           <li class="nav-item">
-            <a class="nav-link {% if 'index' in segment %} active {% endif %}" href="/">
+            <a class="nav-link {% if request.resolver_match.url_name == 'vendor_root' %} active {% endif %}" href="{% url 'vendor:vendor_root' %}">
               <i class="ni ni-tv-2 text-primary"></i>
               <span class="nav-link-text">Dashboard</span>
             </a>
           </li>
           <li class="nav-item">
-            <a class="nav-link {% if 'icons' in segment %} active {% endif %}" href="/icons.html">
-              <i class="ni ni-planet text-orange"></i>
-              <span class="nav-link-text">Icons</span>
-            </a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link {% if 'map' in segment %} active {% endif %}" href="/map.html">
-              <i class="ni ni-pin-3 text-primary"></i>
-              <span class="nav-link-text">Google</span>
-            </a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link {% if 'profile' in segment %} active {% endif %}" href="/profile.html">
+            <a class="nav-link {% if request.resolver_match.url_name == 'profile' %} active {% endif %}" href="{% url 'vendor:vendor_profile' %}">
               <i class="ni ni-single-02 text-yellow"></i>
               <span class="nav-link-text">Profile</span>
             </a>
@@ -39,18 +27,6 @@
             <a class="nav-link {% if 'tables' in segment %} active {% endif %}" href="/tables.html">
               <i class="ni ni-bullet-list-67 text-default"></i>
               <span class="nav-link-text">Tables</span>
-            </a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link" href="/login.html">
-              <i class="ni ni-key-25 text-info"></i>
-              <span class="nav-link-text">Login (template)</span>
-            </a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link" href="/register.html">
-              <i class="ni ni-circle-08 text-pink"></i>
-              <span class="nav-link-text">Register (template)</span>
             </a>
           </li>
 
@@ -72,30 +48,20 @@
 
           <li class="nav-item">
             <a class="nav-link" 
-               target="_blank" 
-               href="https://appseed.us/admin-dashboards/django-dashboard-argon">
+               href="{% url 'vendor:list_product' %}">
               <i class="ni ni-archive-2"></i>
-              <span class="nav-link-text">Product Page</span>
+              <span class="nav-link-text">Products</span>
             </a>
           </li>
 
           <li class="nav-item">
             <a class="nav-link" 
-               target="_blank" 
-               href="https://appseed.us/admin-dashboards/django-dashboard-argon-pro">
+               href="{% url 'vendor:list_order' %}">
               <i class="ni ni-spaceship text-red"></i>
-              <span class="nav-link-text text-red">PRO Version</span>
+              <span class="nav-link-text text-red">Orders</span>
             </a>
           </li>
 
-          <li class="nav-item">
-            <a class="nav-link active active-pro" 
-               target="_blank" 
-               href="http://appseed.us">
-              <i class="ni ni-send text-dark"></i>
-              <span class="nav-link-text">AppSeed</span>
-            </a>
-          </li>
         </ul>
       </div>
     </div>
