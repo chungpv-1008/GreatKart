@@ -379,6 +379,23 @@ files = [
 djangorestframework = "*"
 
 [[package]]
+name = "django-tables2"
+version = "2.6.0"
+description = "Table/data-grid framework for Django"
+optional = false
+python-versions = "*"
+files = [
+    {file = "django-tables2-2.6.0.tar.gz", hash = "sha256:479eed04007cc04bcf764a6fb7a5e3955d94b878ba7f3a4bd4edbd2f7769e08d"},
+    {file = "django_tables2-2.6.0-py2.py3-none-any.whl", hash = "sha256:04f23c1181d93716c67085a3c324b449180fd0c5162ef4619acb0b2d9a166133"},
+]
+
+[package.dependencies]
+Django = ">=3.2"
+
+[package.extras]
+tablib = ["tablib"]
+
+[[package]]
 name = "djangorestframework"
 version = "3.11.0"
 description = "Web APIs for Django, made easy."
@@ -1129,4 +1146,4 @@ files = [
 [metadata]
 lock-version = "2.0"
 python-versions = "^3.8"
-content-hash = "3ce5e78f51ee47d04a80b06f1a521b2366658756590f1917c356e2bd92e36f44"
+content-hash = "8dbcd10334b042dfb932ed92404187bcc4f5bec16d93db9650f6b48e0866809c"

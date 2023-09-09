@@ -32,6 +32,7 @@ crispy-tailwind = "^0.5.0"
 httpx = "^0.24.1"
 djangorestframework-simplejwt = "^5.3.0"
 drf-yasg = "^1.21.7"
+django-tables2 = "^2.6.0"
 
 
 [build-system]
