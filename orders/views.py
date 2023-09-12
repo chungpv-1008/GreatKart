@@ -8,8 +8,7 @@ from store.models import Product
 from django.core.mail import EmailMessage
 from django.template.loader import render_to_string
 from utils.payment import momo
-from utils.order import create_order_number
-
+import uuid
 
 def sendEmail(request, order):
     mail_subject = 'Thank you for your order!'
@@ -33,7 +32,7 @@ def payments(request):
 
             print(order_id)
             # Lấy bản ghi order
-            order = Order.objects.get(user=request.user, is_ordered=False, order_number=order_id)
+            order = Order.objects.get(buyer=request.user, is_ordered=False, order_number=order_id)
             # Tạo 1 bản ghi payment
             payment = Payment(
                 user=request.user,
@@ -46,6 +45,7 @@ def payments(request):
 
             order.payment = payment
             order.is_ordered = True
+            order.vendor = request.session.get('vendor')
             order.save()
 
             # Chuyển hết cart_item thành order_product
@@ -59,7 +59,6 @@ def payments(request):
                 order_product.quantity = item.quantity
                 order_product.product_price = item.product.price
                 order_product.ordered = True
-                order_product.vendor = item.vendor
                 order_product.save()
 
                 cart_item = CartItem.objects.get(id=item.id)
@@ -112,7 +111,7 @@ def place_order(request, total=0, quantity=0,):
         if form.is_valid():
             # Store all the billing information inside Order table
             data = Order()
-            data.user = current_user
+            data.buyer = current_user
             data.first_name = form.cleaned_data['first_name']
             data.last_name = form.cleaned_data['last_name']
             data.phone = form.cleaned_data['phone']
@@ -127,11 +126,11 @@ def place_order(request, total=0, quantity=0,):
             data.tax = tax
             data.ip = request.META.get('REMOTE_ADDR')
             data.save()
-            order_number = create_order_number(data)
+            order_number = str(uuid.uuid4())
             data.order_number = order_number
             data.save()
 
-            order = Order.objects.get(user=current_user, is_ordered=False, order_number=order_number)
+            order = Order.objects.get(buyer=current_user, is_ordered=False, order_number=order_number)
             context = {
                 'order': order,
                 'cart_items': cart_items,
@@ -186,14 +185,14 @@ def momo_payment(request, total=0, quantity=0,):
         quantity += cart_item.quantity
     tax = (2 * total) / 100
     grand_total = total + tax
-    order_number = 0
+    order_number = str(uuid.uuid4())
 
     if request.method == 'POST':
         form = OrderForm(request.POST)
         if form.is_valid():
             # Store all the billing information inside Order table
             data = Order()
-            data.user = current_user
+            data.buyer = current_user
             data.first_name = form.cleaned_data['first_name']
             data.last_name = form.cleaned_data['last_name']
             data.phone = form.cleaned_data['phone']
@@ -205,14 +204,14 @@ def momo_payment(request, total=0, quantity=0,):
             data.city = form.cleaned_data['city']
             data.order_note = form.cleaned_data['order_note']
             data.order_total = grand_total
+            data.vendor = request.session.get('vendor')
             data.tax = tax
             data.ip = request.META.get('REMOTE_ADDR')
             data.save()
-            order_number = create_order_number(data)
             data.order_number = order_number
             data.save()
 
-            order = Order.objects.get(user=current_user, is_ordered=False, order_number=order_number)
+            order = Order.objects.get(buyer=current_user, is_ordered=False, order_number=order_number)
             context = {
                 'order': order,
                 'cart_items': cart_items,

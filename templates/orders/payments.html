@@ -25,48 +25,6 @@
                     </div>
 				</div>
 				<div class="card bg-white p-4 rounded-lg shadow-md">
-					<h5 class="card-header">Payment Method</h5>
-					<div class="card-body">
-						<p class="card-text">
-							<div class="mb-4">
-								<button id="paymentButton" class="group w-full bg-indigo-500 py-2 px-4 rounded-lg transition duration-300 ease-in-out hover:bg-indigo-600 focus:outline-none focus:ring focus:ring-indigo-200 focus:ring-opacity-50" onclick="toggleDropdown()">
-									Select Payment Method
-								</button>
-								<ul id="paymentMethodsDropdown" class="origin-top-left absolute invisible w-full mt-2 py-1 px-4 rounded-lg border border-gray-300 bg-white z-10 transition duration-300 ease-in-out">
-									<li class="cursor-pointer hover:bg-gray-100 py-1" onclick="selectPaymentMethod('cod')">COD</li>
-									<li class="cursor-pointer hover:bg-gray-100 py-1" onclick="selectPaymentMethod('momo')">MOMO</li>
-									<li class="cursor-pointer hover:bg-gray-100 py-1" onclick="selectPaymentMethod('paypal')">PayPal</li>
-									<!-- Add more payment methods here -->
-								</ul>
-							</div>
-							<div class="flex flex-col items-center mt-4">
-								<div class="w-64">
-									<div class="bg-green-500 py-2 px-4 rounded-lg transition duration-300 ease-in-out hover:bg-green-600">
-										<div id="credit-card-details" style="display: none;">
-											<!-- Credit card input fields and additional details -->
-											Thanh toán khi giao hàng tới
-											<!-- Other fields -->
-										</div>
-										<div id="paypal-button-container" style="display: none;">
-											<p class="text-center mb-3">
-												<img src="{% static 'images/misc/payments.png' %}" height="26" />
-											</p>
-										</div>
-										<div id="momo-details" style="display: none;">
-											<p class="text-center mb-3">
-												<button type="button">
-													<a href="{% url 'momo_payment' %}">Thanh toán momo</a>
-												</button>
-											</p>
-										</div>										
-									</div>
-								</div>
-							</div>
-						</p>
-						
-					</div>
-				</div>
-				<div class="card bg-white p-4 rounded-lg shadow-md">
                     <h5 class="card-header">Review Products</h5>
                     <div class="card-body">
                         <table class="table table-borderless table-shopping-cart">
@@ -135,6 +93,61 @@
 						<a href="{% url 'store' %}" class="btn btn-light btn-block">Continue Shopping</a>
 					</div>
 					<!-- card-body.// -->
+				</div>
+				<div class="card bg-white p-4 rounded-lg shadow-md">
+					<h5 class="card-header">Shipping</h5>
+					<div class="card-body">
+						<label for="countries" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Select an option</label>
+							<select id="countries" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
+								<option selected>Choose a country</option>
+								<option value="US">United States</option>
+								<option value="CA">Canada</option>
+								<option value="FR">France</option>
+								<option value="DE">Germany</option>
+							</select>
+					</div>
+				</div>
+				<div class="card bg-white p-4 rounded-lg shadow-md">
+					<h5 class="card-header">Payment Method</h5>
+					<div class="card-body">
+						<p class="card-text">
+							<div class="mb-4">
+								<button id="paymentButton" class="group w-full bg-indigo-500 py-2 px-4 rounded-lg transition duration-300 ease-in-out hover:bg-indigo-600 focus:outline-none focus:ring focus:ring-indigo-200 focus:ring-opacity-50" onclick="toggleDropdown()">
+									Select Payment Method
+								</button>
+								<ul id="paymentMethodsDropdown" class="origin-top-left absolute invisible w-full mt-2 py-1 px-4 rounded-lg border border-gray-300 bg-white z-10 transition duration-300 ease-in-out">
+									<li class="cursor-pointer hover:bg-gray-100 py-1" onclick="selectPaymentMethod('cod')">COD</li>
+									<li class="cursor-pointer hover:bg-gray-100 py-1" onclick="selectPaymentMethod('momo')">MOMO</li>
+									<li class="cursor-pointer hover:bg-gray-100 py-1" onclick="selectPaymentMethod('paypal')">PayPal</li>
+									<!-- Add more payment methods here -->
+								</ul>
+							</div>
+							<div class="flex flex-col items-center mt-4">
+								<div class="w-64">
+									<div class="bg-green-500 py-2 px-4 rounded-lg transition duration-300 ease-in-out hover:bg-green-600">
+										<div id="credit-card-details" style="display: none;">
+											<!-- Credit card input fields and additional details -->
+											Thanh toán khi giao hàng tới
+											<!-- Other fields -->
+										</div>
+										<div id="paypal-button-container" style="display: none;">
+											<p class="text-center mb-3">
+												<img src="{% static 'images/misc/payments.png' %}" height="26" />
+											</p>
+										</div>
+										<div id="momo-details" style="display: none;">
+											<p class="text-center mb-3">
+												<button type="button">
+													<a href="{% url 'momo_payment' %}">Thanh toán momo</a>
+												</button>
+											</p>
+										</div>										
+									</div>
+								</div>
+							</div>
+						</p>
+						
+					</div>
 				</div>
 				<!-- card.// -->
 			</aside>

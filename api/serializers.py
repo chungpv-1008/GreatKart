@@ -67,8 +67,26 @@ class OrderProductSerializer(serializers.ModelSerializer):
         return obj.quantity * obj.product.price
 
 
+class ShippingSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Shipping
+        fields = '__all__'
+
+
+class PaymentSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Payment
+        fields = ('user', 'payment_method', 'amount_paid')
+        read_only_fields = ('payment_id', 'status')
+
+class PaymentReadSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Payment
+        fields = '__all__'
+
 class OrderReadSerializer(serializers.ModelSerializer):
     order_items = OrderProductSerializer(read_only=True, many=True)
+    payment = PaymentReadSerializer(read_only=True)
     vendor_info = serializers.PrimaryKeyRelatedField(queryset=Vendor.objects.all(), source='vendor')
 
     class Meta:
@@ -85,7 +103,7 @@ class OrderWriteSerializer(serializers.ModelSerializer):
     class Meta:
         model = Order
         fields = ('id', 'buyer', 'status', 'order_items', 'address_line_1', 'address_line_2', 'country',
-                  'shipping_address', 'created_at', 'updated_at', 'vendor')
+                  'created_at', 'updated_at', 'vendor')
         read_only_fields = ('status', )
 
     def create(self, validated_data):
@@ -118,19 +136,6 @@ class OrderWriteSerializer(serializers.ModelSerializer):
         return instance
 
 
-class ShippingSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = Shipping
-        fields = '__all__'
-
-
-class PaymentSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = Payment
-        fields = '__all__'
-        read_only_fields = ('payment_id', 'status')
-
-
 class CheckoutSerializer(serializers.ModelSerializer):
     """
     Serializer class to set or update shipping address, billing address and payment of an order.
@@ -142,11 +147,14 @@ class CheckoutSerializer(serializers.ModelSerializer):
         fields = ('id', 'payment', 'shipping_address')
 
     def update(self, instance, validated_data):
-        order_shipping_address = None
         order_payment = None
-
         shipping_address = validated_data['shipping_address']
         payment = validated_data['payment']
+        payment['status'] = 'COMPLETED'
+        order = Order.objects.filter(id=instance.id)
+        order.update({
+            'status': 'completed'
+        })
 
         # Payment option is not set for an order
         if not instance.payment:

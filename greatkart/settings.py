@@ -38,6 +38,7 @@ INSTALLED_APPS = [
     'crispy_forms',
     'crispy_tailwind',
     'drf_yasg',
+    'django_tables2'
 ]
 
 MIDDLEWARE = [
@@ -116,6 +117,9 @@ CRISPY_ALLOWED_TEMPLATE_PACKS = "tailwind"
 CRISPY_TEMPLATE_PACK = "tailwind"
 STATIC_URL = '/static/'
 STATIC_ROOT = BASE_DIR / 'static'
+
+DJANGO_TABLES2_PAGE_RANGE = 5
+
 STATICFILES_DIRS = [
     'greatkart/static'
 ]
@@ -143,3 +147,8 @@ REST_FRAMEWORK = {
     'DEFAULT_PAGINATION_CLASS': 'rest_framework.pagination.PageNumberPagination',
     'PAGE_SIZE': 10
 }
+
+
+MOMO_PARTNER_CODE = env("MOMO_PARTNER_CODE")
+MOMO_ACCESS_KEY = env("MOMO_ACCESS_KEY")
+MOMO_SECRET_KEY = env("MOMO_SECRET_KEY")

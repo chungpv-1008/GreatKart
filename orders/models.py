@@ -16,13 +16,11 @@ class Payment(models.Model):
     
     user = models.ForeignKey(Account, on_delete=models.CASCADE)
     payment_id = models.CharField(max_length=100)
-    payment_method = models.CharField(max_length=1, choices=PAYMENT_CHOICES)
+    payment_method = models.CharField(max_length=1, choices=PAYMENT_CHOICES, default="M")
     amount_paid = models.CharField(max_length=100)
-    status = models.CharField(max_length=100, choices=STATUS_CHOICES)
+    status = models.CharField(max_length=100, choices=STATUS_CHOICES, default="PENDING")
     created_at = models.DateTimeField(auto_now_add=True)
-    order_payment = models.OneToOneField(
-        "orders.Order", related_name='payment_order', on_delete=models.CASCADE)
-
+    
     def __str__(self):
         return self.payment_id
     
@@ -39,7 +37,6 @@ class ShippingVendor(models.Model):
      
 
 class Shipping(models.Model):
-    order = models.ForeignKey("Order", on_delete=models.CASCADE, related_name="order_id")
     price = models.IntegerField()
     shipping_method = models.ForeignKey(ShippingVendor, on_delete=models.CASCADE)
     tracking_number = models.CharField(blank=True, max_length=20)
@@ -55,9 +52,9 @@ class Order(models.Model):
     )
 
     buyer = models.ForeignKey(Account, on_delete=models.SET_NULL, null=True)
-    shipping = models.ForeignKey(Shipping, on_delete=models.SET_NULL, null=True, related_name="shipping_id")
-    payment = models.ForeignKey(Payment, on_delete=models.SET_NULL, blank=True, null=True)
-    order_number = models.CharField(max_length=20)
+    shipping = models.OneToOneField(Shipping, on_delete=models.SET_NULL, null=True, related_name="order")
+    payment = models.OneToOneField(Payment, on_delete=models.SET_NULL, blank=True, null=True, related_name="order")
+    order_number = models.CharField(max_length=50)
     first_name = models.CharField(max_length=50)
     last_name = models.CharField(max_length=50)
     phone = models.CharField(max_length=15)

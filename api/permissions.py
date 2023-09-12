@@ -45,4 +45,4 @@ class IsOrderPendingWhenCheckout(BasePermission):
     def has_object_permission(self, request, view, obj):
         if request.method in ('GET',):
             return True
-        return obj.status == 'PENDING'
+        return obj.status == 'New'

@@ -14,6 +14,7 @@ from .views import (
     OrderViewSet, 
     PaymentViewSet, 
     ShippingViewSet, 
+    OrderPayAPIView,
     OrderCancelAPIView,
     CheckoutAPIView,
     MomoWebhookAPIView
@@ -29,7 +30,7 @@ router = DefaultRouter()
 router.register(r'categories', CategoryViewSet, basename="category")
 router.register(r'products', ProductViewSet, basename="product")
 router.register(r'orders', OrderViewSet, basename="order")
-router.register(r'payments', PaymentViewSet, basename="payment")
+# router.register(r'payments', PaymentViewSet, basename="payment")
 router.register(r'shipping', ShippingViewSet, basename="shipping")
 urlpatterns = [
     path('', include(router.urls)),
@@ -37,6 +38,7 @@ urlpatterns = [
     path('token/', TokenObtainPairView.as_view(), name='token_obtain_pair'),
     path('token/refresh/', TokenRefreshView.as_view(), name='token_refresh'),
     path(r'orders/cancel-order/<int:order_id>', OrderCancelAPIView.as_view(), name="cancel-order"),
+    path(r'orders/pay', OrderPayAPIView.as_view(), name="pay-order"),
     path('checkout/<int:pk>/', CheckoutAPIView.as_view(), name='checkout'),
     path('momo/webhook/', MomoWebhookAPIView.as_view(), name='momo_webhook'),
 ]

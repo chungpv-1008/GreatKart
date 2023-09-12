@@ -6,8 +6,10 @@ from .models import (Order,
                      ShippingVendor,
                      )
 
+class OrderAdmin(admin.ModelAdmin):
+    list_display = ('buyer', 'status', 'vendor')
 
-admin.site.register(Order)
+admin.site.register(Order, OrderAdmin)
 admin.site.register(Payment)
 admin.site.register(OrderProduct)
 admin.site.register(Shipping)
