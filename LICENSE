@@ -1,0 +1,31 @@
+Licenses for Software
+==============================
+
+Shuup
+---------------------------------------
+
+* Copyright: Copyright (c) 2012-2021 by Shuup Commerce Inc.
+* License: Open Software License version 3.0
+  <https://github.com/shuup/shuup/blob/master/LICENSE>
+* Repository: https://github.com/shuup/shuup
+
+Django Oscar
+----------
+
+* Copyright: Copyright (c) 2011-present Tangent Communications PLC and individual contributors.
+* License: BSD 3-Clause License <https://github.com/django-oscar/django-oscar/blob/master/LICENSE>
+* Repository: https://github.com/django-oscar/django-oscar
+
+Django Salesman
+---------
+
+* Copyright: Copyright (c) 2019, Dino Perovic
+* License: BSD 3-Clause License <https://github.com/dinoperovic/django-salesman/blob/master/LICENSE>
+* Repository: https://github.com/dinoperovic/django-salesman
+
+Django Argon Dashboard
+---------
+
+* Copyright: Copyright (c) 2019 - present [AppSeed](http://appseed.us/)
+* License: MIT License <https://github.com/app-generator/django-argon-dashboard/blob/master/LICENSE.md>
+* Repository: https://github.com/app-generator/django-argon-dashboard

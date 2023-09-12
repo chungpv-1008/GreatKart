@@ -16,7 +16,7 @@ SECRET_KEY = env("SECRET_KEY")
 
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ["*"]
 
 INSTALLED_APPS = [
     'django.contrib.admin',
@@ -30,6 +30,15 @@ INSTALLED_APPS = [
     'carts',
     'accounts',
     'orders',
+    'vendors',
+    'rest_framework',
+    # external packages
+    'easy_thumbnails',
+    'filer',
+    'crispy_forms',
+    'crispy_tailwind',
+    'drf_yasg',
+    'django_tables2'
 ]
 
 MIDDLEWARE = [
@@ -103,8 +112,14 @@ USE_L10N = True
 
 USE_TZ = True
 
+CRISPY_TEMPLATE_PACK = "bootstrap4"
+CRISPY_ALLOWED_TEMPLATE_PACKS = "tailwind"
+CRISPY_TEMPLATE_PACK = "tailwind"
 STATIC_URL = '/static/'
 STATIC_ROOT = BASE_DIR / 'static'
+
+DJANGO_TABLES2_PAGE_RANGE = 5
+
 STATICFILES_DIRS = [
     'greatkart/static'
 ]
@@ -127,3 +142,13 @@ EMAIL_HOST = env("EMAIL_HOST")
 EMAIL_HOST_USER = env("EMAIL_HOST_USER")
 EMAIL_HOST_PASSWORD = env("EMAIL_HOST_PASSWORD")
 EMAIL_PORT = env("EMAIL_PORT")
+
+REST_FRAMEWORK = {
+    'DEFAULT_PAGINATION_CLASS': 'rest_framework.pagination.PageNumberPagination',
+    'PAGE_SIZE': 10
+}
+
+
+MOMO_PARTNER_CODE = env("MOMO_PARTNER_CODE")
+MOMO_ACCESS_KEY = env("MOMO_ACCESS_KEY")
+MOMO_SECRET_KEY = env("MOMO_SECRET_KEY")

@@ -54,6 +54,7 @@ class Account(AbstractBaseUser):
     is_staff = models.BooleanField(default=False)
     is_active = models.BooleanField(default=False)
     is_superadmin = models.BooleanField(default=False)
+    is_vendor = models.BooleanField(default=False)
 
     USERNAME_FIELD = 'email'    # Trường quyêt định khi login
     REQUIRED_FIELDS = ['username', 'first_name', 'last_name']    # Các trường yêu cầu khi đk tài khoản (mặc định đã có email), mặc định có password

@@ -1,0 +1,33 @@
+@startuml
+actor User
+participant VendorSite 
+participant Server
+User -> VendorSite: Access home page
+activate VendorSite
+VendorSite -> Server: GET api/vendors/{vendor_name}
+activate Server
+VendorSite <-- Server: Vendor ID
+deactivate Server
+VendorSite -> Server: GET api/products/{vendor_id}
+activate Server
+VendorSite <-- Server: Products list of that vendor
+deactivate Server
+User -> VendorSite: Press checkout button
+VendorSite -> Server: POST api/orders
+activate Server
+VendorSite <-- Server: Order info
+deactivate Server 
+User -> VendorSite: Fill in shipping address, \npayment info, shipping info
+VendorSite -> Server: PUT api/checkout
+activate Server
+VendorSite <-- Server: Order updated
+deactivate Server
+User -> VendorSite: Press place order
+VendorSite -> Server: POST api/order/pay
+activate Server
+VendorSite <-- Server: Payment created
+deactivate Server
+VendorSite -> User: Redirect payment successful page
+deactivate Server
+deactivate VendorSite
+@enduml

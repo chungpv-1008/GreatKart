@@ -1,0 +1,158 @@
+{% extends 'layouts/base.html' %}
+{% load django_tables2 %}
+{% block title %} Tables {% endblock title %}
+
+{% block content %}
+
+{% block table_layout_header %}
+  <div class="header bg-primary pb-6">
+    <div class="container-fluid">
+      <div class="header-body">
+        <div class="row align-items-center py-4">
+          <div class="col-lg-6 col-7">
+            <h6 class="h2 text-white d-inline-block mb-0">Tables</h6>
+            <nav aria-label="breadcrumb" class="d-none d-md-inline-block ml-md-4">
+              <ol class="breadcrumb breadcrumb-links breadcrumb-dark">
+                <li class="breadcrumb-item"><a href="#"><i class="fas fa-home"></i></a></li>
+                <li class="breadcrumb-item"><a href="#">Tables</a></li>
+                <li class="breadcrumb-item active" aria-current="page">Tables</li>
+              </ol>
+            </nav>
+          </div>
+          <div class="col-lg-6 col-5 text-right">
+            <a href="#" class="btn btn-sm btn-neutral">New</a>
+            <a href="#" class="btn btn-sm btn-neutral">Filters</a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+{% endblock table_layout_header %}
+
+{% block table_layout_content %}
+  <!-- Page content -->
+  {% block table-wrapper %}
+  <div class="container-fluid mt--6">
+    <div class="row">
+      <div class="col">
+        <div class="card">
+          <!-- Card header -->
+          <div class="card-header border-0">
+            <h3 class="mb-0">Light table</h3>
+          </div>
+          <!-- Light table -->
+          <div class="table-responsive">
+            {% block table %}
+            <table class="table align-items-center table-flush">
+              {% block table.thead %}
+              {% if table.show_header %}
+              <thead class="thead-light">
+                  <tr>
+                    {% for column in table.columns %}
+                        <th scope="col" {{ column.attrs.th.as_html }}>
+                            {% if column.orderable %}
+                                <a href="{% querystring table.prefixed_order_by_field=column.order_by_alias.next %}">{{ column.header }}</a>
+                            {% else %}
+                                {{ column.header }}
+                            {% endif %}
+                        </th>
+                    {% endfor %}
+                  </tr>
+              </thead>
+              {% endif %}
+              {% endblock table.thead %}
+              {% block table.tbody %}
+              <tbody class="list">
+                {% for row in table.paginated_rows %}
+                    {% block table.tbody.row %}
+                    <tr {{ row.attrs.as_html }}>
+                        {% for column, cell in row.items %}
+                            <td scope="row" {{ column.attrs.td.as_html }}>{% if column.localize == None %}{{ cell }}{% else %}{% if column.localize %}{{ cell|localize }}{% else %}{{ cell|unlocalize }}{% endif %}{% endif %}</td>
+                        {% endfor %}
+                    </tr>
+                    {% endblock table.tbody.row %}
+                {% empty %}
+                    {% if table.empty_text %}
+                    {% block table.tbody.empty_text %}
+                    <tr><td colspan="{{ table.columns|length }}">{{ table.empty_text }}</td></tr>
+                    {% endblock table.tbody.empty_text %}
+                    {% endif %}
+                {% endfor %}
+              </tbody>
+              {% endblock table.tbody %}
+            </table>
+            {% endblock table %}
+          </div>
+          <!-- Card footer -->
+          {% block table.tfoot %}
+          <div class="card-footer py-4">
+            {% if table.has_footer %}
+              <tr>
+              {% for column in table.columns %}
+                  <td {{ column.attrs.tf.as_html }}>{{ column.footer }}</td>
+              {% endfor %}
+              </tr>
+            {% endif %}
+            {% block pagination %}
+              {% if table.page and table.paginator.num_pages > 1 %}
+              <nav aria-label="...">
+                <ul class="pagination justify-content-end mb-0">
+                  {% if table.page.has_previous %}
+                    {% block pagination.previous %}
+                    <li class="page-item">
+                      <a class="page-link" href="{% querystring table.prefixed_page_field=table.page.previous_page_number %}" tabindex="-1">
+                        <i class="fas fa-angle-left"></i>
+                        <span class="sr-only">Previous</span>
+                      </a>
+                    </li>
+                    {% endblock pagination.previous %}
+                  {% endif %}
+
+                  {% if table.page.has_previous or table.page.has_next %}
+                    {% block pagination.range %}
+                      {% for p in table.page|table_page_range:table.paginator %}
+                        {% if p == '...' %}
+                          <li class="page-item">
+                            <a class="page-link" href="#">{{ p }}</a>
+                          </li>
+                        {% else %}
+                          <li class="page-item {% if p == table.page.number %}active{% endif %}">
+                            <a class="page-link" href="{% querystring table.prefixed_page_field=p %}">
+                              {{ p }}
+                              <span class="sr-only">(current)</span>
+                            </a>
+                          </li>
+                        {% endif %}
+                      {% endfor %}                    
+                    {% endblock pagination.range %}
+                  {% endif %}
+                  {% if table.page.has_next %}
+                    {% block pagination.next %}
+                    <li class="page-item">
+                      <a class="page-link" href="{% querystring table.prefixed_page_field=table.page.next_page_number %}">
+                        <i class="fas fa-angle-right"></i>
+                        <span class="sr-only">Next</span>
+                      </a>
+                    </li>
+                    {% endblock pagination.next %}
+                  {% endif %}
+                </ul>
+              </nav>
+              {% endif %}
+            {% endblock pagination %}
+          </div>
+          {% endblock table.tfoot %}
+        </div>
+      </div>
+    </div>
+    {% include "includes/footer.html" %}
+
+  </div>
+  {% endblock table-wrapper %}
+
+{% endblock table_layout_content %}
+
+{% endblock content %}
+
+<!-- Specific JS goes HERE --> 
+{% block javascripts %}{% endblock javascripts %}
